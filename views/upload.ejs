@@ -1,80 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Upload Video</title>
+<meta charset="UTF-8">
+<title>Team Chaos Streaming</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: "Segoe UI", Tahoma, sans-serif;
-    }
+<style>
+:root {
+    --bg: #141414;
+    --card: #1f1f1f;
+    --primary: #e50914;
+    --text: #ffffff;
+    --muted: #b3b3b3;
+}
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
 
-    .upload-container {
-      background: #ffffff;
-      padding: 30px 35px;
-      border-radius: 12px;
-      width: 350px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      text-align: center;
-    }
+body {
+    background: var(--bg);
+    color: var(--text);
+}
 
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
+/* ================= NAVBAR ================= */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 60px;
+    background: #000;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-    input[type="text"],
-    input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+}
 
-    input[type="file"] {
-      padding: 6px;
-    }
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #667eea;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+nav ul li {
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.3s;
+}
 
-    button:hover {
-      background: #5a67d8;
+nav ul li:hover {
+    color: var(--text);
+}
+
+/* ================= MAIN LAYOUT ================= */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 60px;
+}
+
+/* ================= CARDS ================= */
+.card {
+    background: var(--card);
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    animation: fadeUp 0.8s ease;
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+/* ================= UPLOAD ================= */
+input[type="file"] {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+button:hover {
+    background: #f6121d;
+    transform: scale(1.04);
+}
+
+/* ================= PROGRESS ================= */
+.progress {
+    height: 6px;
+    background: #333;
+    border-radius: 5px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    transition: width 0.4s ease;
+}
+
+#status {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ================= VIDEO PLAYER ================= */
+video {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 12px;
+    background: #000;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
-  </style>
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .main {
+        grid-template-columns: 1fr;
+        padding: 30px;
+    }
+}
+</style>
 </head>
 
 <body>
-  <div class="upload-container">
-    <h2>Upload Video</h2>
 
-    <form>
-      <input type="text" placeholder="Video title" required>
-      <input type="file" accept="video/*" required>
-      <button type="submit">Upload</button>
-    </form>
-  </div>
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">TEAM CHAOS</div>
+    <ul>
+        <li>Home</li>
+        <li>Upload</li>
+        <li>My Videos</li>
+        <li>Profile</li>
+    </ul>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- UPLOAD CARD -->
+    <div class="card">
+        <h2>Upload Video</h2>
+        <p>Select a video file and stream it instantly</p>
+
+        <input type="file" id="videoInput" accept="video/*">
+        <button onclick="uploadVideo()">Upload & Stream</button>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <span id="status"></span>
+    </div>
+
+    <!-- PLAYER CARD -->
+    <div class="card">
+        <h2>Now Streaming</h2>
+        <video id="videoPlayer" controls></video>
+    </div>
+
+</div>
+<script>
+function uploadVideo() {
+    const input = document.getElementById("videoInput");
+    const player = document.getElementById("videoPlayer");
+    const progressBar = document.getElementById("progressBar");
+    const status = document.getElementById("status");
+
+    if (input.files.length === 0) {
+        status.innerText = "Please select a video file.";
+        return;
+    }
+
+    status.innerText = "Uploading...";
+    progressBar.style.width = "0%";
+
+    let progress = 0;
+    let interval = setInterval(() => {
+        progress += 10;
+        progressBar.style.width = progress + "%";
+
+        if (progress >= 100) {
+            clearInterval(interval);
+
+            const file = input.files[0];
+            player.src = URL.createObjectURL(file);
+            player.play();
+
+            status.innerText = "Upload complete. Now streaming 🎬";
+        }
+    }, 180);
+}
+</script>
+
+
 </body>
 </html>
-

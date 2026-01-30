@@ -1,8 +1,106 @@
-<h2>Creator Dashboard</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Creator Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-<p>Your uploaded videos</p>
+<style>
+body{
+    margin:0;
+    font-family:Poppins,sans-serif;
+    background:#000;
+    color:white;
+}
 
-<ul>
-  <li>My First Video – Likes: 0</li>
-  <li>Learning Node.js – Likes: 0</li>
-</ul>
+header{
+    background:#111;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    color:#ff1a1a;
+    box-shadow:0 0 20px #ff1a1a;
+}
+
+.container{
+    padding:20px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:#111;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 0 15px rgba(255,0,0,0.4);
+}
+
+.card h2{
+    margin:0;
+    color:#ff1a1a;
+}
+
+.video-list{
+    margin-top:30px;
+}
+
+.video{
+    background:#111;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.video button{
+    background:#ff1a1a;
+    border:none;
+    color:white;
+    padding:5px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.video button:hover{
+    background:#cc0000;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎬 Creator Dashboard</header>
+
+<div class="container">
+
+<div class="stats">
+    <div class="card">
+        <h2>12</h2>
+        <p>Total Videos</p>
+    </div>
+    <div class="card">
+        <h2>3.2K</h2>
+        <p>Total Likes</p>
+    </div>
+    <div class="card">
+        <h2>850</h2>
+        <p>Subscribers</p>
+    </div>
+    <div class="card">
+        <h2>120</h2>
+        <p>Comments</p>
+    </div>
+</div>
+
+<div class="video-list">
+    <h3 style="color:#ff1a1a;">📹 My Videos</h3>
+
+    <div class="video">
+        <span>HTML & CSS Tutorial</span>
