@@ -9,6 +9,11 @@ app.set("view engine", "ejs");
 
 const multer = require("multer");
 
+let creators = [
+  { name: "admin", subscribers: 0 }
+];
+
+
 const storage = multer.diskStorage({
   destination: "public/videos",
   filename: (req, file, cb) => {
@@ -78,4 +83,16 @@ app.post("/upload", upload.single("video"), (req, res) => {
   });
 
   res.redirect("/");
+});
+
+app.post("/comment/:id", (req, res) => {
+  const video = videos.find(v => v.id == req.params.id);
+  video.comments.push(req.body.comment);
+  res.redirect("/watch/" + video.id);
+});
+
+app.post("/subscribe/:creator", (req, res) => {
+  const creator = creators.find(c => c.name === req.params.creator);
+  creator.subscribers++;
+  res.redirect("back");
 });

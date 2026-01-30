@@ -1,12 +1,31 @@
-<h2>Watch Video</h2>
+<h2><%= video.title %></h2>
 
 <video width="400" controls>
-  <source src="/videos/sample.mp4" type="video/mp4">
+  <source src="/videos/<%= video.filename %>" type="video/mp4">
 </video>
 
-<br><br>
-<button>👍 Like</button>
+<p>Likes: <%= video.likes %></p>
+
+<form method="POST" action="/like/<%= video.id %>">
+  <button>👍 Like</button>
+</form>
+
+<hr>
 
 <h3>Comments</h3>
-<textarea></textarea><br>
-<button>Post</button>
+
+<ul>
+  <% video.comments.forEach(c => { %>
+    <li><%= c %></li>
+  <% }) %>
+</ul>
+
+<form method="POST" action="/comment/<%= video.id %>">
+  <input type="text" name="comment" placeholder="Write a comment" required>
+  <button>Post</button>
+</form>
+<form method="POST" action="/subscribe/admin">
+  <button>🔔 Subscribe</button>
+</form>
+
+<a href="/">Back</a>
