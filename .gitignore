@@ -1,0 +1,27 @@
+# Node modules (very important)
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+
+# SQLite database (if you add later)
+*.db
+
+# Uploaded videos (optional, keep repo light)
+public/videos/
+
+# Package lock (optional for school projects)
+package-lock.json
