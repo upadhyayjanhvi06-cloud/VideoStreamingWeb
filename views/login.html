@@ -163,7 +163,16 @@
     </div>
 </div>
 
+<!-- ================= FAKE LOGIN SCRIPT ================= -->
+<script>
+    const form = document.getElementById("loginForm");
 
+    form.addEventListener("submit", function(e){
+        e.preventDefault(); // prevent page reload
+        // Fake login: just redirect to home page
+        window.location.href = "/";
+    });
+</script>
 
 </body>
 </html>

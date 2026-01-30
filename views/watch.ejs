@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Video Interaction Platform</title>
+<title><%= video.title %> - Mini VideoHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -83,20 +83,6 @@ button:hover {
     font-size: 14px;
 }
 
-/* Voice Search */
-.voice-search {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-}
-
-.voice-search input {
-    flex: 1;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-}
-
 /* Comments */
 .comments { margin-top: 15px; }
 input { width:100%; padding:10px; border-radius:8px; border:none; }
@@ -119,6 +105,11 @@ input { width:100%; padding:10px; border-radius:8px; border:none; }
     cursor: pointer;
 }
 
+.video-item a {
+    color: white;
+    text-decoration: none;
+}
+
 .video-item:hover {
     background: #2c5364;
 }
@@ -128,18 +119,23 @@ input { width:100%; padding:10px; border-radius:8px; border:none; }
 <body>
 
 <div class="card">
+    <!-- VIDEO -->
     <video controls>
-        <source src="sample.mp4" type="video/mp4">
+        <source src="/videos/<%= video.filename %>" type="video/mp4">
     </video>
 
-    <!-- Like Share Subscribe -->
+    <!-- Like / Subscribe -->
     <div class="actions">
-        <button onclick="like(this)">❤️</button>
-        <button onclick="share(this)">🔗</button>
-        <button onclick="subscribe(this)">🔔</button>
+        <form method="POST" action="/like/<%= video.id %>" style="display:inline">
+            <button type="submit" onclick="like(this)">❤️ <%= video.likes %></button>
+        </form>
+
+        <form method="POST" action="/subscribe/admin" style="display:inline">
+            <button type="submit" onclick="subscribe(this)">🔔 Subscribe</button>
+        </form>
     </div>
 
-    <!-- Watch later / Favourite -->
+    <!-- Extra actions -->
     <div class="extra-actions">
         <span onclick="alert('Saved to Watch Later ⏰')">⏰ Watch Later</span>
         <span onclick="alert('Added to Favourites ⭐')">⭐ Favourite</span>
@@ -148,61 +144,56 @@ input { width:100%; padding:10px; border-radius:8px; border:none; }
     <!-- Description -->
     <div class="description">
         <strong>Description:</strong><br>
-        Learn modern web development concepts with interactive UI and animations.
-    </div>
-
-    <!-- Voice Search -->
-    <div class="voice-search">
-        <input type="text" id="voiceInput" placeholder="Voice search video...">
-        <button onclick="voiceSearch()">🎙️</button>
+        This is a video about <%= video.title %>. Learn new things and enjoy!
     </div>
 
     <!-- Comments -->
     <div class="comments">
-        <input type="text" id="commentInput" placeholder="Add a comment..." onkeypress="addComment(event)">
-        <div class="comment-list" id="commentList"></div>
+        <form method="POST" action="/comment/<%= video.id %>">
+            <input type="text" name="comment" placeholder="Add a comment..." required>
+            <button type="submit">Post</button>
+        </form>
+
+        <div class="comment-list">
+            <% if(video.comments.length > 0) { %>
+                <% video.comments.forEach(c => { %>
+                    <p>💬 <%= c %></p>
+                <% }) %>
+            <% } else { %>
+                <p>No comments yet</p>
+            <% } %>
+        </div>
     </div>
 
-    <!-- Recommended -->
+    <!-- Recommended videos -->
     <div class="recommend">
         <h3>▶ Recommended Videos</h3>
-        <div class="video-item">JavaScript Animation Tricks</div>
-        <div class="video-item">HTML & CSS Full Course</div>
-        <div class="video-item">Frontend Project Ideas</div>
-        <div class="video-item">Tech Fest Winning Websites</div>
+        <% videos.forEach(v => { %>
+            <% if(v.id !== video.id) { %>
+                <div class="video-item">
+                    <a href="/watch/<%= v.id %>"><%= v.title %></a>
+                </div>
+            <% } %>
+        <% }) %>
     </div>
 </div>
 
 <script>
+// Animations for Like & Subscribe
 function like(btn){
-    let h=document.createElement("div");h.innerHTML="❤️";h.className="heart";btn.appendChild(h);
+    let h = document.createElement("div");
+    h.innerHTML = "❤️";
+    h.className = "heart";
+    btn.appendChild(h);
     setTimeout(()=>h.remove(),800);
 }
-function share(btn){
-    let a=document.createElement("div");a.innerHTML="➤";a.className="arrow";btn.appendChild(a);
-    setTimeout(()=>a.remove(),1000);
-}
-function subscribe(btn){
-    let t=document.createElement("div");t.innerHTML="👍";t.className="thumb";btn.appendChild(t);
-    setTimeout(()=>t.remove(),1000);
-}
-function addComment(e){
-    if(e.key==="Enter"){
-        let i=commentInput.value.trim();
-        if(i){commentList.innerHTML+=`<p>💬 ${i}</p>`;commentInput.value="";}
-    }
-}
 
-/* Voice search */
-function voiceSearch(){
-    if(!('webkitSpeechRecognition'in window)){
-        alert("Voice search not supported");
-        return;
-    }
-    let rec=new webkitSpeechRecognition();
-    rec.lang="en-US";
-    rec.start();
-    rec.onresult=e=>voiceInput.value=e.results[0][0].transcript;
+function subscribe(btn){
+    let t = document.createElement("div");
+    t.innerHTML = "🔔";
+    t.className = "thumb";
+    btn.appendChild(t);
+    setTimeout(()=>t.remove(),1000);
 }
 </script>
 

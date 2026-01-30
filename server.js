@@ -15,20 +15,20 @@ let creators = [
 
 // fake database
 let videos = [
-  {
-    id: 1,
-    title: "My First Video",
-    filename: "sample.mp4",
-    likes: 0,
-    comments: []
-  },
-  {
-    id: 2,
-    title: "Learning Node.js",
-    filename: "sample2.mp4",
-    likes: 0,
-    comments: []
-  }
+//   {
+//     id: 1,
+//     title: "My First Video",
+//     filename: "sample.mp4",
+//     likes: 0,
+//     comments: []
+//   },
+//   {
+//     id: 2,
+//     title: "Learning Node.js",
+//     filename: "sample2.mp4",
+//     likes: 0,
+//     comments: []
+//   }
 ];
 
 // multer setup
@@ -50,26 +50,53 @@ app.get("/", (req, res) => {
 });
 
 // WATCH
+// app.get("/watch/:id", (req, res) => {
+//   const video = videos.find(v => v.id == req.params.id);
+//   res.render("watch", { video });
+// });
+// WATCH PAGE
 app.get("/watch/:id", (req, res) => {
   const video = videos.find(v => v.id == req.params.id);
-  res.render("watch", { video });
+
+  if (!video) {
+    return res.status(404).send("Video not found");
+  }
+
+  // Pass BOTH video and videos array
+  res.render("watch", { video, videos });
 });
+
 
 // UPLOAD
 app.get("/upload", (req, res) => {
   res.render("upload");
 });
 
+// app.post("/upload", upload.single("video"), (req, res) => {
+//   videos.push({
+//     id: videos.length + 1,
+//     title: req.body.title,
+//     filename: req.file.filename,
+//     likes: 0,
+//     comments: []
+//   });
+//   res.redirect("/");
+// });
+
 app.post("/upload", upload.single("video"), (req, res) => {
-  videos.push({
+  const newVideo = {
     id: videos.length + 1,
     title: req.body.title,
     filename: req.file.filename,
     likes: 0,
     comments: []
-  });
-  res.redirect("/");
+  };
+  videos.push(newVideo);
+
+  // Respond with JSON so front-end can stream it
+  res.json({ filename: newVideo.filename });
 });
+
 
 // LIKE
 app.post("/like/:id", (req, res) => {

@@ -86,9 +86,12 @@ nav ul li:hover {
 }
 
 /* ================= UPLOAD ================= */
-input[type="file"] {
+input[type="file"], input[type="text"] {
     width: 100%;
     margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
 }
 
 button {
@@ -142,14 +145,8 @@ video {
 
 /* ================= ANIMATION ================= */
 @keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ================= RESPONSIVE ================= */
@@ -168,10 +165,10 @@ video {
 <nav>
     <div class="logo">TEAM CHAOS</div>
     <ul>
-        <li>Home</li>
+        <li><a href="/" style="color:inherit; text-decoration:none;">Home</a></li>
         <li>Upload</li>
-        <li>My Videos</li>
-        <li>Profile</li>
+        <li><a href="/dashboard" style="color:inherit; text-decoration:none;">My Videos</a></li>
+        <li><a href="/login" style="color:inherit; text-decoration:none;">Profile</a></li>
     </ul>
 </nav>
 
@@ -181,10 +178,13 @@ video {
     <!-- UPLOAD CARD -->
     <div class="card">
         <h2>Upload Video</h2>
-        <p>Select a video file and stream it instantly</p>
+        <p>Select a video file and give it a title</p>
 
-        <input type="file" id="videoInput" accept="video/*">
-        <button onclick="uploadVideo()">Upload & Stream</button>
+        <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="Video Title" required>
+            <input type="file" name="video" accept="video/*" required>
+            <button type="submit">Upload & Stream</button>
+        </form>
 
         <div class="progress">
             <div class="progress-bar" id="progressBar"></div>
@@ -200,39 +200,46 @@ video {
     </div>
 
 </div>
+
 <script>
-function uploadVideo() {
-    const input = document.getElementById("videoInput");
-    const player = document.getElementById("videoPlayer");
-    const progressBar = document.getElementById("progressBar");
-    const status = document.getElementById("status");
+const form = document.getElementById("uploadForm");
+const progressBar = document.getElementById("progressBar");
+const status = document.getElementById("status");
+const videoPlayer = document.getElementById("videoPlayer");
 
-    if (input.files.length === 0) {
-        status.innerText = "Please select a video file.";
-        return;
-    }
+form.addEventListener("submit", function(e){
+    e.preventDefault(); // prevent default form submit
 
+    const formData = new FormData(form);
     status.innerText = "Uploading...";
     progressBar.style.width = "0%";
 
-    let progress = 0;
-    let interval = setInterval(() => {
-        progress += 10;
-        progressBar.style.width = progress + "%";
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/upload", true);
 
-        if (progress >= 100) {
-            clearInterval(interval);
-
-            const file = input.files[0];
-            player.src = URL.createObjectURL(file);
-            player.play();
-
-            status.innerText = "Upload complete. Now streaming 🎬";
+    xhr.upload.onprogress = function(event){
+        if(event.lengthComputable){
+            const percent = Math.floor((event.loaded / event.total) * 100);
+            progressBar.style.width = percent + "%";
         }
-    }, 180);
-}
-</script>
+    }
 
+    xhr.onload = function(){
+        if(xhr.status === 200){
+            status.innerText = "Upload complete! Streaming now 🎬";
+
+            // Get the uploaded filename from the server response
+            const response = JSON.parse(xhr.responseText);
+            videoPlayer.src = "/videos/" + response.filename;
+            videoPlayer.play();
+        } else {
+            status.innerText = "Upload failed 😢";
+        }
+    }
+
+    xhr.send(formData);
+});
+</script>
 
 </body>
 </html>
