@@ -1,5 +1,169 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Chaos | Login</title>
 
-<input type="text" placeholder="Username"><br><br>
-<input type="password" placeholder="Password"><br><br>
-<button>Login</button>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4")
+                        no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .logo {
+            color: #e50914;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-box {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 6px;
+            color: #fff;
+        }
+
+        .login-box h2 {
+            margin-bottom: 25px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: #333;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            background: #454545;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            background: #e50914;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-box button:hover {
+            background: #f6121d;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-top: 10px;
+            color: #b3b3b3;
+        }
+
+        .options a {
+            color: #b3b3b3;
+            text-decoration: none;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        .signup {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #737373;
+        }
+
+        .signup a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #8c8c8c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="login-container">
+    <h1 class="logo">TEAM CHAOS</h1>
+
+    <div class="login-box">
+        <h2>Sign In</h2>
+
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email address" required>
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit">Sign In</button>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#">Need help?</a>
+            </div>
+        </form>
+
+        <p class="signup">
+            New to Team Chaos?
+            <a href="#">Sign up now</a>
+        </p>
+
+        <p class="note">
+            This page is protected by Google reCAPTCHA to ensure you're not a bot.
+        </p>
+    </div>
+</div>
+
+
+
+</body>
+</html>
