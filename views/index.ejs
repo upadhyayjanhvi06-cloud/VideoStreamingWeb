@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini VideoHub</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<h1>Mini VideoHub 🎥</h1>
+
+<a href="/upload">Upload</a>
+<hr>
+
+<% videos.forEach(video => { %>
+  <div class="video">
+    <h3><%= video.title %></h3>
+    <p>Likes: <%= video.likes %></p>
+    <a href="/watch/<%= video.id %>">Watch</a>
+  </div>
+<% }) %>
+
+</body>
+</html>
